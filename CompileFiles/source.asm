@@ -1,0 +1,15 @@
+PUSH -11
+PUSH -11 ; ddgddddhdhdhdh
+MUL
+    
+
+PUSH 4
+PUSH 1
+MUL
+PUSH 30
+MUL
+
+SUB
+
+OUT
+HLT
