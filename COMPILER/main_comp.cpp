@@ -1,9 +1,19 @@
 #include "compile.h"
 
 #define SOURCE "./CompileFiles/source.asm"
-#define BYTE_CODE "./CompileFiles/bytecode.asm"
+#define BYTE_CODE "./CompileFiles/bytecode.asm" // спрятать в макросе для Compiler
 
-int main()
+//PUSH 80
+//PUSH 70
+//JMP metka
+
+
+//metka:
+//PUSH
+
+//tokenizations
+
+int main() // argc argv
 {
     FILE *SourceFile = fopen(SOURCE, "rb");
     FILE *ByteCode = fopen(BYTE_CODE, "wb");

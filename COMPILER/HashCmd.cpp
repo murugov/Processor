@@ -1,8 +1,8 @@
 #include "compile.h"
 
-hash_t HashCmd(char *cmd)
+
+hash_t HashCmd(const char *cmd)
 {
-    
     if (IS_BAD_PTR(cmd))
         return 0;
     

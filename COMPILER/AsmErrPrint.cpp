@@ -1,38 +1,63 @@
 #include "compile.h"
 #include "colors.h"
 
+
 void AsmErrPrint(AsmErr_t verd)
 {
     switch (verd)
     {
         case BAD_INPUT_FILE_PTR:
-            perror(ANSI_COLOR_RED "Bad input_file's pointer!" ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_RED "Bad pointer to %s!" ANSI_COLOR_RESET, SOURCE);
             break;
 
         case BAD_OUTPUT_FILE_PTR:
-            perror(ANSI_COLOR_RED "Bad output_file's pointer!" ANSI_COLOR_RESET);
-            break;
-
-        case WRONG_FILE_INFO:
-            perror(ANSI_COLOR_RED "Error getting file information!\n" ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_RED "Bad pointer to %s!" ANSI_COLOR_RESET, BYTE_CODE);
             break;
 
         case BAD_BUFFER_PTR:
             perror(ANSI_COLOR_RED "Bad buffer pointer!\n" ANSI_COLOR_RESET);
             break;
 
-        case BAD_ARR_PTR:
-            perror(ANSI_COLOR_RED "Bad pointer to array of pointers!\n" ANSI_COLOR_RESET);
+        case BAD_ARR_CMD_PTR:
+            perror(ANSI_COLOR_RED "Bad pointer to array arr_cmd!\n" ANSI_COLOR_RESET);
+            break;
+
+        case BAD_CODE_PTR:
+            perror(ANSI_COLOR_RED "Bad pointer to array code!\n" ANSI_COLOR_RESET);
+            break;
+
+        case BAD_ARR_LABELS_PTR:
+            perror(ANSI_COLOR_RED "Bad pointer to array arr_labels!\n" ANSI_COLOR_RESET);
+            break;
+
+        case WRONG_FILE_SIZE:
+            perror(ANSI_COLOR_RED "Error getting file size!\n" ANSI_COLOR_RESET);
+            break;
+
+        case CTOR_FAIL:
+            perror(ANSI_COLOR_RED "Error creating array arr_cmd!\n" ANSI_COLOR_RESET);
             break;
 
         case CMD_NUM_FAIL:
             perror(ANSI_COLOR_RED "Incorrect number of commands!\n" ANSI_COLOR_RESET);
             break;
 
-        case BAD_ARR_CMDS_PTR:
-            perror(ANSI_COLOR_RED "Bad pointer to array of commands!" ANSI_COLOR_RESET);
+        case CMD_WITH_ARG_FAIL:
+            perror(ANSI_COLOR_RED "Error filling array code in function CmdWithArg!\n" ANSI_COLOR_RESET);
+            break;
+
+        case CMD_WITHOUT_ARG_FAIL:
+            perror(ANSI_COLOR_RED "Error filling array code in function CmdWithoutArg!\n" ANSI_COLOR_RESET);
+            break;
+
+        case REG_NEX:
+            perror(ANSI_COLOR_RED "Non-existent register!\n" ANSI_COLOR_RESET);
+            break; 
 
         case UNKNOWN_CMD:
+            break;
+
+        case UNKNOWN_LABEL:
             break;
 
         case SUCCESS:

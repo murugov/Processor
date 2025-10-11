@@ -1,15 +1,20 @@
-PUSH -11
-PUSH -11 ; ddgddddhdhdhdh
-MUL
-    
+        push 1
+        push 2
+        add
+        call inc_r1
+        pop r2
+        push r2
+        push 777
+        out
+        hlt
 
-PUSH 4
-PUSH 1
-MUL
-PUSH 30
-MUL
+end:
+        out
+        hlt
 
-SUB
-
-OUT
-HLT
+inc_r1:
+        push r1
+        push 1
+        add
+        pop r1
+        ret

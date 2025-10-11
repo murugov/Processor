@@ -1,0 +1,56 @@
+PUSH 1
+POP RAX
+PUSH 5
+POP RBX
+PUSH 6
+POP RCX
+PUSH RBX
+PUSH RBX
+MUL         ; start solve D
+PUSH 4
+PUSH RAX
+MUL
+PUSH RCX
+MUL
+SUB
+POP RDX
+
+mtka:
+PUSH 0         ; D < 0
+PUSH RDX
+JA 25
+PUSH 0         ; D = 0
+PUSH RDX
+JE 28
+PUSH 2         ; D > 0
+PUSH 1
+JMP 30
+PUSH 0         ; OUT: 0 - zero roots
+OUT
+JMP 53
+PUSH 1.        ; OUT: 1 - one root
+OUT
+JMP 53
+PUSH 0         ; root_1
+PUSH RBX
+SUB
+PUSH RDX
+SQRT
+ADD
+PUSH 2
+PUSH RAX
+MUL
+DIV
+OUT
+PUSH 0         ; root_2
+PUSH RBX
+SUB
+PUSH RDX
+SQRT
+SUB
+PUSH 2
+PUSH RAX
+MUL
+DIV
+OUT
+HLT
