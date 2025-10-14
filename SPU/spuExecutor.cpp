@@ -3,30 +3,30 @@
 #include "SizeFile.h"
 #include "STACK/StackFunc.hpp"
 
-WrapCmd instr_set[] = 
+WrapCmd spu_instr_set[] = 
 {
-    {CmdHLT, CMD_HLT}, // похожее название
-    {CmdPUSH, CMD_PUSH},
-    {CmdPOP, CMD_POP},
-    {CmdADD, CMD_ADD},
-    {CmdSUB, CMD_SUB},
-    {CmdMUL, CMD_MUL},
-    {CmdDIV, CMD_DIV},
-    {CmdSQRT, CMD_SQRT},
-    {CmdIN, CMD_IN},
-    {CmdOUT, CMD_OUT},
-    {CmdJumps, CMD_JMP},
-    {CmdJumps, CMD_JE},
-    {CmdJumps, CMD_JNE},
-    {CmdJumps, CMD_JA},
-    {CmdJumps, CMD_JAE},
-    {CmdJumps, CMD_JB},
-    {CmdJumps, CMD_JBE}, //отдельная функция и потом через define
-    {CmdCALL, CMD_CALL},
-    {CmdRET, CMD_RET}
+    {FUNC_CMD_HLT, CMD_HLT}, // похожее название
+    {FUNC_CMD_PUSH, CMD_PUSH},
+    {FUNC_CMD_POP, CMD_POP},
+    {FUNC_CMD_ADD, CMD_ADD},
+    {FUNC_CMD_SUB, CMD_SUB},
+    {FUNC_CMD_MUL, CMD_MUL},
+    {FUNC_CMD_DIV, CMD_DIV},
+    {FUNC_CMD_SQRT, CMD_SQRT},
+    {FUNC_CMD_IN, CMD_IN},
+    {FUNC_CMD_OUT, CMD_OUT},
+    {FUNC_CMD_JMP, CMD_JMP},
+    {FUNC_CMD_JE, CMD_JE},
+    {FUNC_CMD_JNE, CMD_JNE},
+    {FUNC_CMD_JA, CMD_JA},
+    {FUNC_CMD_JAE, CMD_JAE},
+    {FUNC_CMD_JB, CMD_JB},
+    {FUNC_CMD_JBE, CMD_JBE}, //отдельная функция и потом через define
+    {FUNC_CMD_CALL, CMD_CALL},
+    {FUNC_CMD_RET, CMD_RET}
 };
 
-#define LEN_INSTR_SET sizeof(instr_set) / sizeof(*instr_set)
+#define LEN_INSTR_SET sizeof(spu_instr_set) / sizeof(*spu_instr_set)
 
 
 spuErr_t spuCtor(spu_t *spu, FILE *stream)
@@ -76,9 +76,9 @@ spuErr_t spuExecutor(spu_t *spu)
         {
             char cmd = (spu->code)[spu->pc] & 0x1F;
 
-            if (instr_set[wrap].cmd == cmd)
+            if (spu_instr_set[wrap].cmd == cmd)
             {
-                calc_verd = (instr_set[wrap].func)(spu);
+                calc_verd = (spu_instr_set[wrap].func)(spu);
                 if (calc_verd != SUCCESS)
                     return calc_verd;
             }

@@ -1,15 +1,8 @@
 #include "compile.h"
 
 #define SOURCE "./CompileFiles/source.asm"
-#define BYTE_CODE "./CompileFiles/bytecode.asm" // спрятать в макросе для Compiler
+#define BYTE_CODE "./CompileFiles/bytecode.asm" // спрятать в макросе
 
-//PUSH 80
-//PUSH 70
-//JMP metka
-
-
-//metka:
-//PUSH
 
 //tokenizations
 
@@ -18,10 +11,13 @@ int main() // argc argv
     FILE *SourceFile = fopen(SOURCE, "rb");
     FILE *ByteCode = fopen(BYTE_CODE, "wb");
 
-    AsmErr_t compile_verd = Compiler(SourceFile, ByteCode);
+    size_t count_line = 0;
+    char **arr_ptr = ArrPtrCtor(SourceFile, &count_line);
 
-    AsmErrPrint(compile_verd);
+    AsmErr_t asm_verd = Assembler(arr_ptr, count_line, ByteCode);
+    AsmErrPrint(asm_verd);
 
+    free(arr_ptr);
     fclose(SourceFile);
     fclose(ByteCode);
 

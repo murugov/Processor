@@ -79,19 +79,25 @@ struct spu_t
 
 #define NUM_REG 16
 
-spuErr_t CmdHLT(spu_t *spu);
-spuErr_t CmdPUSH(spu_t *spu);
-spuErr_t CmdPOP(spu_t *spu);
-spuErr_t CmdADD(spu_t *spu);
-spuErr_t CmdSUB(spu_t *spu);
-spuErr_t CmdMUL(spu_t *spu);
-spuErr_t CmdDIV(spu_t *spu);
-spuErr_t CmdSQRT(spu_t *spu);
-spuErr_t CmdIN(spu_t *spu);
-spuErr_t CmdOUT(spu_t *spu);
-spuErr_t CmdJumps(spu_t *spu);
-spuErr_t CmdCALL(spu_t *spu);
-spuErr_t CmdRET(spu_t *spu);
+spuErr_t FUNC_CMD_HLT(spu_t *spu);
+spuErr_t FUNC_CMD_PUSH(spu_t *spu);
+spuErr_t FUNC_CMD_POP(spu_t *spu);
+spuErr_t FUNC_CMD_ADD(spu_t *spu);
+spuErr_t FUNC_CMD_SUB(spu_t *spu);
+spuErr_t FUNC_CMD_MUL(spu_t *spu);
+spuErr_t FUNC_CMD_DIV(spu_t *spu);
+spuErr_t FUNC_CMD_SQRT(spu_t *spu);
+spuErr_t FUNC_CMD_IN(spu_t *spu);
+spuErr_t FUNC_CMD_OUT(spu_t *spu);
+spuErr_t FUNC_CMD_JMP(spu_t *spu);
+spuErr_t FUNC_CMD_JE(spu_t *spu);
+spuErr_t FUNC_CMD_JNE(spu_t *spu);
+spuErr_t FUNC_CMD_JA(spu_t *spu);
+spuErr_t FUNC_CMD_JAE(spu_t *spu);
+spuErr_t FUNC_CMD_JB(spu_t *spu);
+spuErr_t FUNC_CMD_JBE(spu_t *spu);
+spuErr_t FUNC_CMD_CALL(spu_t *spu);
+spuErr_t FUNC_CMD_RET(spu_t *spu);
 typedef spuErr_t (*func_t)(spu_t *spu);
 
 struct WrapCmd

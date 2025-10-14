@@ -23,7 +23,6 @@ int main()
         fclose(LogFile);
 
         return 0;
-
     }
 
     spuDtor(&spu);

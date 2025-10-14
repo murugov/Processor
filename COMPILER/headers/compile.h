@@ -125,9 +125,7 @@ struct WrapCmd
 };
 
 
-size_t LineNumber(char* buffer);
-AsmErr_t Compiler(FILE *SourceFile, FILE *ByteCode);
-AsmErr_t ArrPtrCtor(char *buffer, char **arr_ptr);
+char** ArrPtrCtor(FILE *SourceFile, size_t *count_line);
 AsmErr_t Assembler(char **arr_ptr, size_t count_n, FILE *ByteCode);
 AsmErr_t CodeWriter(char *code, char **arr_cmd, size_t count_cmd, label_t *arr_labels, size_t *count_labels, size_t *pc);
 hash_t HashCmd(const char *buffer);

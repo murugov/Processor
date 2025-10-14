@@ -1,14 +1,13 @@
 #include "spu.h"
 #include "colors.h"
-#include "STACK/StackFunc.hpp"
 
 
-spuErr_t CmdHLT(spu_t * /*spu*/)
+spuErr_t FUNC_CMD_HLT(spu_t * /*spu*/)
 {
     return STOP_BY_HLT;
 }
 
-spuErr_t CmdPUSH(spu_t *spu)
+spuErr_t FUNC_CMD_PUSH(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;
@@ -40,7 +39,7 @@ spuErr_t CmdPUSH(spu_t *spu)
     return SUCCESS;
 }
 
-spuErr_t CmdPOP(spu_t *spu)
+spuErr_t FUNC_CMD_POP(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;
@@ -58,7 +57,7 @@ spuErr_t CmdPOP(spu_t *spu)
     return SUCCESS;
 }
 
-spuErr_t CmdADD(spu_t *spu)
+spuErr_t FUNC_CMD_ADD(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;
@@ -77,7 +76,7 @@ spuErr_t CmdADD(spu_t *spu)
     return SUCCESS;
 }
 
-spuErr_t CmdSUB(spu_t *spu)
+spuErr_t FUNC_CMD_SUB(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;
@@ -96,7 +95,7 @@ spuErr_t CmdSUB(spu_t *spu)
     return SUCCESS;
 }
 
-spuErr_t CmdMUL(spu_t *spu)
+spuErr_t FUNC_CMD_MUL(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;
@@ -115,7 +114,7 @@ spuErr_t CmdMUL(spu_t *spu)
     return SUCCESS;
 }
 
-spuErr_t CmdDIV(spu_t *spu)
+spuErr_t FUNC_CMD_DIV(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;
@@ -140,7 +139,7 @@ spuErr_t CmdDIV(spu_t *spu)
     return SUCCESS;
 }
 
-spuErr_t CmdSQRT(spu_t *spu)
+spuErr_t FUNC_CMD_SQRT(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;
@@ -159,7 +158,7 @@ spuErr_t CmdSQRT(spu_t *spu)
     return SUCCESS;
 }
 
-spuErr_t CmdIN(spu_t *spu)
+spuErr_t FUNC_CMD_IN(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;
@@ -175,7 +174,7 @@ spuErr_t CmdIN(spu_t *spu)
     return SUCCESS;
 }
 
-spuErr_t CmdOUT(spu_t *spu)
+spuErr_t FUNC_CMD_OUT(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;
@@ -190,7 +189,7 @@ spuErr_t CmdOUT(spu_t *spu)
     return SUCCESS;
 }
 
-spuErr_t CmdJumps(spu_t *spu)
+spuErr_t FUNC_CMD_JMP(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;
@@ -226,7 +225,7 @@ spuErr_t CmdJumps(spu_t *spu)
     return SUCCESS;
 }
 
-spuErr_t CmdCALL(spu_t *spu)
+spuErr_t FUNC_CMD_CALL(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;
@@ -234,7 +233,7 @@ spuErr_t CmdCALL(spu_t *spu)
     return SUCCESS;
 }
 
-spuErr_t CmdRET(spu_t *spu)
+spuErr_t FUNC_CMD_RET(spu_t *spu)
 {
     if (IS_BAD_PTR(spu))
         return BAD_SPU_PTR;

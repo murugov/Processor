@@ -1,0 +1,17 @@
+HLT     0       without
+PUSH    1       with
+POP     2       with
+ADD     3       without
+SUB     4       without
+MUL     5       without
+DIV     6       without
+SQRT    7       without
+IN      8       without
+OUT     9       without
+JMP     10      with
+JE      11      with
+JNE     12      with
+JA      13      with
+JAE     14      with
+JB      15      with
+JBE     16      with
