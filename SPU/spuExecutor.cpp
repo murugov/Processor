@@ -1,11 +1,11 @@
 #include "spu.h"
 #include "colors.h"
 #include "SizeFile.h"
-
+#include "STACK/StackFunc.hpp"
 
 WrapCmd instr_set[] = 
 {
-    {CmdHLT, CMD_HLT},
+    {CmdHLT, CMD_HLT}, // похожее название
     {CmdPUSH, CMD_PUSH},
     {CmdPOP, CMD_POP},
     {CmdADD, CMD_ADD},
@@ -21,7 +21,7 @@ WrapCmd instr_set[] =
     {CmdJumps, CMD_JA},
     {CmdJumps, CMD_JAE},
     {CmdJumps, CMD_JB},
-    {CmdJumps, CMD_JBE},
+    {CmdJumps, CMD_JBE}, //отдельная функция и потом через define
     {CmdCALL, CMD_CALL},
     {CmdRET, CMD_RET}
 };
@@ -70,7 +70,6 @@ spuErr_t spuExecutor(spu_t *spu)
 
     for (;spu->pc < count_cmd; ++(spu->pc))
     {
-        //printf();
         spuErr_t calc_verd = UNKNOWN_CMD;
 
         for (size_t wrap = 0; wrap < LEN_INSTR_SET; ++wrap)

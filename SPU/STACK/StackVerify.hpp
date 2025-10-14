@@ -2,7 +2,8 @@
 #include "hash.h"
 
 
-StackErr_t ErrDetect(stk_t *stk, StackFunc IncomingFunc, const char *file, const char *func, size_t line)
+template <typename T>
+StackErr_t ErrDetect(stk_t<T> *stk, StackFunc IncomingFunc, const char *file, const char *func, size_t line)
 {
     StackErr_t err_verd = StackVerify(stk, IncomingFunc);
 
@@ -16,7 +17,8 @@ StackErr_t ErrDetect(stk_t *stk, StackFunc IncomingFunc, const char *file, const
 }
 
 
-StackErr_t StackVerify(stk_t *stk, StackFunc IncomingFunc)
+template <typename T>
+StackErr_t StackVerify(stk_t<T> *stk, StackFunc IncomingFunc)
 {
     if (IS_BAD_PTR(stk))
         return STK_ERROR;

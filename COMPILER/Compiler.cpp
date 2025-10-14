@@ -25,7 +25,7 @@ AsmErr_t Compiler(FILE *SourceFile, FILE *ByteCode)
     for (size_t num_elem = 0; num_elem < (size_t)file_size; ++num_elem) //new func
         buffer[num_elem] = (char)toupper(buffer[num_elem]);
 
-    size_t count_cmd = CmdNumber(buffer); //new name LineNumber
+    size_t count_cmd = LineNumber(buffer);
 
     if (count_cmd == 0)
         return CMD_NUM_FAIL;
@@ -39,11 +39,17 @@ AsmErr_t Compiler(FILE *SourceFile, FILE *ByteCode)
     
     AsmErr_t asm_verd = Assembler(arr_cmd, count_cmd, ByteCode); // в main
 
+    
+    if (asm_verd)
+    {
+        free(buffer);
+        free(arr_cmd);
+        
+        return asm_verd;
+    }
+    
     free(buffer);
     free(arr_cmd);
-
-    if (asm_verd)
-        return asm_verd;
 
     return SUCCESS;
 }
@@ -104,7 +110,7 @@ AsmErr_t ArrPtrCtor(char *buffer, char **arr_cmd)
 }
 
 
-size_t CmdNumber(char* buffer)
+size_t LineNumber(char* buffer)
 {
     if (IS_BAD_PTR(buffer))
         return 0;

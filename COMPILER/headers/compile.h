@@ -9,7 +9,7 @@
 #include <ctype.h>
 #include "IsBadPtr.h"
 
-#define SOURCE "./CompileFiles/source.asm"
+#define SOURCE "./CompileFiles/source.asm" //костыль
 #define BYTE_CODE "./CompileFiles/bytecode.asm" 
 
 #define SIGNATURE "AM"
@@ -48,8 +48,10 @@ enum AsmErr_t
     UNKNOWN_LABEL        = 0x0F
 };
 
+//#include "CmdCodesEnums.h"
+
 enum CmdCodes
-{
+{ 
     CMD_HLT  = 0x00,
     CMD_PUSH = 0x01,
     CMD_POP  = 0x02,
@@ -123,7 +125,7 @@ struct WrapCmd
 };
 
 
-size_t CmdNumber(char* buffer);
+size_t LineNumber(char* buffer);
 AsmErr_t Compiler(FILE *SourceFile, FILE *ByteCode);
 AsmErr_t ArrPtrCtor(char *buffer, char **arr_ptr);
 AsmErr_t Assembler(char **arr_ptr, size_t count_n, FILE *ByteCode);

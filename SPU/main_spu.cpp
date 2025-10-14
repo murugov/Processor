@@ -3,7 +3,6 @@
 FILE *LogFile = fopen(LOG_FILE, "wb");
 
 
-
 int main()
 {
     FILE *ByteCode = fopen(BYTE_CODE, "rb");

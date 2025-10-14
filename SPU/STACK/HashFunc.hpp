@@ -5,7 +5,8 @@ static size_t hash_arr_cap = 0;
 static size_t hash_arr_size = 0;
 
 
-hash_t HashFunc(stk_t *stk) //по байтам структуру
+template <typename T>
+hash_t HashFunc(stk_t<T> *stk) //по байтам структуру
 {
     hash_t new_hash = 0;
 
@@ -48,7 +49,8 @@ StackErr_t HashArrCtor()
 }
 
 
-StackErr_t HashAdd(stk_t *stk)
+template <typename stk_elem_t>
+StackErr_t HashAdd(stk_t<stk_elem_t> *stk)
 {
     if(HashArrRealloc())
         return STK_ERROR;

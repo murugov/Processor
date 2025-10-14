@@ -2,14 +2,11 @@
 #include "hash.h"
 
 
-StackErr_t StackInit(stk_t *stk, const char *name, const char *file, const char *func, size_t line)
+template <typename T>
+StackErr_t StackInit(stk_t<T> *stk, const char *name, const char *file, const char *func, size_t line)
 {
     if (IS_BAD_PTR(stk))
-    {
-        StackDump(stk, __FILE__, __FUNCTION__, __LINE__);
-
         return STK_ERROR;
-    }
     
     (*stk).id.name = name;
     (*stk).id.file = file;
@@ -20,7 +17,8 @@ StackErr_t StackInit(stk_t *stk, const char *name, const char *file, const char 
 }
 
 
-StackErr_t StackCtor(stk_t *stk, cap_t capacity)
+template <typename T>
+StackErr_t StackCtor(stk_t<T> *stk, cap_t capacity)
 {   
     stk->size = 2;
     stk->capacity = capacity + 2;
@@ -28,7 +26,7 @@ StackErr_t StackCtor(stk_t *stk, cap_t capacity)
     if (ERR_DETECT(stk, STK_CTOR))
         return STK_ERROR;
     
-    stk->data = (stk_elem_t *)calloc((size_t)capacity + 2, sizeof(stk_elem_t));
+    stk->data = (T*)calloc((size_t)capacity + 2, sizeof(T));
 
     if (ERR_DETECT(stk, STK_CTOR))
         return STK_ERROR;
@@ -56,7 +54,8 @@ StackErr_t StackCtor(stk_t *stk, cap_t capacity)
 }
 
 
-StackErr_t StackPush(stk_t *stk, stk_elem_t value)
+template <typename T>
+StackErr_t StackPush(stk_t<T> *stk, const T value)
 {
     if (ERR_DETECT(stk, STK_PUSH))
         return STK_ERROR;
@@ -76,7 +75,8 @@ StackErr_t StackPush(stk_t *stk, stk_elem_t value)
 }
 
 
-StackErr_t StackPop(stk_t *stk, stk_elem_t *last_value)
+template <typename T>
+StackErr_t StackPop(stk_t<T> *stk, T *last_value)
 {
     stk->size--;
     
@@ -84,7 +84,7 @@ StackErr_t StackPop(stk_t *stk, stk_elem_t *last_value)
         return STK_ERROR;
 
     *last_value = stk->data[stk->size - 1];
-    stk->data[stk->size - 1] = '\0';
+    stk->data[stk->size - 1] = T();
 
     hash_arr[stk->hash_index] = HashFunc(stk);
 
@@ -92,7 +92,8 @@ StackErr_t StackPop(stk_t *stk, stk_elem_t *last_value)
 }
 
 
-StackErr_t StackRealloc(stk_t *stk)
+template <typename T>
+StackErr_t StackRealloc(stk_t<T> *stk)
 {
     if (ERR_DETECT(stk, STK_CTOR))
         return STK_ERROR;
@@ -100,7 +101,7 @@ StackErr_t StackRealloc(stk_t *stk)
     if (stk->size + 1 >= stk->capacity)
     {
         stk->capacity = stk->capacity << 1;
-        stk_elem_t *new_data = (stk_elem_t*)realloc(stk->data, (size_t)stk->capacity * sizeof(stk_elem_t));
+        T *new_data = (T*)realloc(stk->data, (size_t)stk->capacity * sizeof(T));
 
         if(IS_BAD_PTR(new_data))
         {
@@ -111,7 +112,7 @@ StackErr_t StackRealloc(stk_t *stk)
         }
 
         for (size_t i = (size_t)(stk->capacity / 2) - 1; i < (size_t)stk->capacity - 1; ++i)
-            new_data[i] = '\0';
+            new_data[i] = T();
         
         new_data[(size_t)stk->capacity - 1] = CANARY_4;
 
@@ -123,8 +124,8 @@ StackErr_t StackRealloc(stk_t *stk)
     return STK_SUCCESS;
 }
 
-
-StackErr_t StackDtor(stk_t *stk)
+template <typename T>
+StackErr_t StackDtor(stk_t<T> *stk)
 {
     if (ERR_DETECT(stk, STK_DTOR))
         return STK_ERROR;

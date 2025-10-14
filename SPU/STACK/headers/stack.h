@@ -59,10 +59,11 @@ struct stack_id
     size_t line;
 };
 
+template <typename T>
 struct stk_t
 {
     canary_t canary_1 = CANARY_1;
-    stk_elem_t *data;
+    T *data;
     ssize_t size;
     cap_t capacity;
     err_t error;
@@ -71,19 +72,38 @@ struct stk_t
     size_t hash_index;
 };
 
-StackErr_t StackInit(stk_t *stk, const char *name, const char *file, const char *func, size_t line);
-StackErr_t ErrDetect(stk_t *stk, StackFunc IncomingFunc, const char *file, const char *func, size_t line);
-StackErr_t StackCtor(stk_t *stk, cap_t capacity);
-StackErr_t StackDtor(stk_t *stk);
-void StackDump(stk_t *stk, const char *file, const char *func, size_t line);
-StackErr_t StackPop(stk_t *stk, stk_elem_t *last_value);
-StackErr_t StackPush(stk_t *stk, stk_elem_t value);
-StackErr_t StackRealloc(stk_t *stk);
-StackErr_t StackVerify(stk_t *stk, StackFunc IncomingFunc = DEFUALT);
+
+template <typename T>
+StackErr_t StackInit(stk_t<T> *stk, const char *name, const char *file, const char *func, size_t line);
+
+template <typename T>
+StackErr_t ErrDetect(stk_t<T> *stk, StackFunc IncomingFunc, const char *file, const char *func, size_t line);
+
+template <typename T>
+StackErr_t StackCtor(stk_t<T> *stk, cap_t capacity);
+
+template <typename T>
+StackErr_t StackDtor(stk_t<T> *stk);
+
+template <typename T>
+void StackDump(stk_t<T> *stk, const char *file, const char *func, size_t line);
+
+template <typename T>
+StackErr_t StackPush(stk_t<T> *stk, const T value);
+
+template <typename T>
+StackErr_t StackPop(stk_t<T> *stk, T *last_value);
+
+template <typename T>
+StackErr_t StackRealloc(stk_t<T> *stk);
+
+template <typename T>
+StackErr_t StackVerify(stk_t<T> *stk, StackFunc IncomingFunc = DEFUALT);
 
 #define ERR_DETECT(stk, IncomingFunc)  ErrDetect(stk, IncomingFunc, __FILE__, __FUNCTION__, __LINE__)
 #define ERR_CHECK(err_code)  ((stk->error) & err_code) == err_code
 #define STACK_INIT(stk, capacity)  StackInit(stk, #stk, __FILE__, __FUNCTION__, __LINE__); StackCtor(stk, capacity)
 #define IS_BAD_PTR(ptr) IsBadPtr((void*)ptr)
+
 
 #endif

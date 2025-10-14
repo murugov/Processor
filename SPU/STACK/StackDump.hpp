@@ -2,7 +2,8 @@
 #include "my_logger.h"
 
 
-void StackDump(stk_t *stk, const char *file, const char *func, size_t line)
+template <typename T>
+void StackDump(stk_t<T> *stk, const char *file, const char *func, size_t line)
 {
     if (IS_BAD_PTR(stk))
     {

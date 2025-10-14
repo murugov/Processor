@@ -57,29 +57,6 @@ enum CmdCodes //это будет в отдельном файле, когда
     CMD_RET = 0x12
 };
 
-enum CmdHash
-{
-    HASH_HLT  = 0x117D0,
-    HASH_PUSH = 0x25A71A,
-    HASH_POP  = 0x13631,
-    HASH_ADD  = 0xFC81,
-    HASH_SUB  = 0x14220,
-    HASH_MUL  = 0x12BA4,
-    HASH_DIV  = 0x10871,
-    HASH_SQRT = 0x26F520,
-    HASH_IN   = 0x925,
-    HASH_OUT  = 0x1332E,
-    HASH_JMP  = 0x11F6D,
-    HASH_JE   = 0x93B,
-    HASH_JNE  = 0x11F81,
-    HASH_JA   = 0x937,
-    HASH_JAE  = 0x11DEE,
-    HASH_JB   = 0x938,
-    HASH_JBE  = 0x11E0D,
-    HASH_CALL = 0x1F725E,
-    HASH_RET  = 0x13C81
-};
-
 enum Operands
 {
     OP_NUM = 0x20,
@@ -90,12 +67,14 @@ enum Operands
 typedef int cmd_arg_t;
 typedef size_t hash_t;
 
+
 struct spu_t
 {
     char *code;
     size_t pc;
-    stk_t stk;
+    stk_t<int> stk;
     cmd_arg_t *regs;
+    //stk_t<size_t> stk_ret;
 };
 
 #define NUM_REG 16
