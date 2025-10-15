@@ -6,10 +6,10 @@ ASM_INCLUDES  = -I./COMPILER/headers
 SPU_INCLUDES  = -I./SPU/headers
 STK_INCLUDES  = -I./SPU/STACK/headers
 
-COMMON_FILES = COMMON/IsBadPtr.cpp COMMON/LineCounter.cpp COMMON/SizeFile.cpp
+COMMON_FILES = COMMON/IsBadPtr.cpp COMMON/LineCounter.cpp COMMON/SizeFile.cpp COMMON/TXTreader.cpp
 ASM_FILES = COMPILER/ArrPtrCtor.cpp COMPILER/AsmCmdWrt.cpp COMPILER/AsmErrPrint.cpp COMPILER/Assembler.cpp COMPILER/HashCmd.cpp
 SPU_FILES = SPU/CalcFunc.cpp SPU/spuErrPrint.cpp SPU/spuExecutor.cpp
-STK_FILES = SPU/STACK/HashFunc.hpp SPU/STACK/StackFunc.hpp SPU/STACK/StackVerify.hpp SPU/STACK/StackDump.hpp
+STK_FILES = SPU/STACK/headers/hash.h SPU/STACK/headers/stack.h SPU/STACK/HashFunc.hpp SPU/STACK/StackFunc.hpp SPU/STACK/StackVerify.hpp SPU/STACK/StackDump.hpp
 
 all: help
 
@@ -18,9 +18,9 @@ comp: COMPILER/main_comp.cpp $(COMMON_FILES) $(ASM_FILES)
 	g++ $(FLAGS) COMPILER/main_comp.cpp $(COMMON_FILES) $(ASM_FILES) $(COMMON_INCLUDES) $(GEN_INCLUDES) $(ASM_INCLUDES) -o comp_program
 	@echo "-----------------------------------------------------------------------------------------"
 
-spu: SPU/main_spu.cpp $(COMMON_FILES) $(SPU_FILES)
+spu: SPU/main_spu.cpp $(COMMON_FILES) $(STK_FILES) $(SPU_FILES)
 	@echo "-----------------------------------------------------------------------------------------"
-	g++ $(FLAGS) SPU/main_spu.cpp $(COMMON_FILES) $(SPU_FILES) $(COMMON_INCLUDES) $(GEN_INCLUDES) $(SPU_INCLUDES) $(STK_INCLUDES) -o spu_program
+	g++ $(FLAGS) $(COMMON_INCLUDES) $(SPU_INCLUDES) $(STK_INCLUDES) SPU/main_spu.cpp $(COMMON_FILES) $(STK_FILES) $(SPU_FILES)
 	@echo "-----------------------------------------------------------------------------------------"
 
 run-comp: comp

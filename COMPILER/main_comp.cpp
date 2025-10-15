@@ -6,7 +6,7 @@
 
 //tokenizations
 
-int main() // argc argv
+int main() // argc argv вечерком сделать
 {
     FILE *SourceFile = fopen(SOURCE, "rb");
     FILE *ByteCode = fopen(BYTE_CODE, "wb");

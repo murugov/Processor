@@ -80,7 +80,7 @@ char** TXTreader(FILE *SourceFile, size_t *count_line, int (*convert)(int))
         }
     }
 
-    free(buffer);
+    // free(buffer); //AAAAASSSSSSKKKKKK
 
     return arr_ptr;
 }

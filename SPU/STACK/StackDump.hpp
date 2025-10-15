@@ -1,6 +1,9 @@
 #include "stack.h"
 #include "my_logger.h"
 
+#ifndef STACK_DUMP_HPP
+#define STACK_DUMP_HPP
+
 
 template <typename T>
 void StackDump(stk_t<T> *stk, const char *file, const char *func, size_t line)
@@ -91,3 +94,5 @@ void StackDump(stk_t<T> *stk, const char *file, const char *func, size_t line)
 
     fprintf(LogFile, "\n---------------------------------------------------------------------------------------------------------------------------\n\n");
 }
+
+#endif

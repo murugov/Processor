@@ -74,7 +74,7 @@ struct spu_t
     size_t pc;
     stk_t<int> stk;
     cmd_arg_t *regs;
-    //stk_t<size_t> stk_ret;
+    stk_t<unsigned long> stk_ret;
 };
 
 #define NUM_REG 16

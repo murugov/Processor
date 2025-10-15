@@ -1,7 +1,6 @@
 #include "spu.h"
 #include "colors.h"
 #include "SizeFile.h"
-#include "STACK/StackFunc.hpp"
 
 WrapCmd spu_instr_set[] = 
 {
@@ -59,6 +58,8 @@ spuErr_t spuCtor(spu_t *spu, FILE *stream)
     if (IS_BAD_PTR(spu->regs))
         return BAD_SPU_REGS_PTR;
 
+    STACK_INIT(&spu->stk_ret, 16);
+
     return SUCCESS;
 }
 
@@ -100,6 +101,7 @@ spuErr_t spuDtor(spu_t *spu)
     free(spu->code);
     StackDtor(&spu->stk);
     free(spu->regs);
+    StackDtor(&spu->stk_ret);
 
     return SUCCESS;
 }

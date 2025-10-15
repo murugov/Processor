@@ -18,23 +18,30 @@ AsmErr_t CmdWithArg(char *code, char *ptr, size_t *pc, CmdCodes cmd, label_t *ar
     if (IS_BAD_PTR(count_labels))
         return CMD_WITH_ARG_FAIL;
 
-    cmd_arg_t arg_c = 0; //arg_num
-    cmd_arg_t arg_r = 0; //arg_reg
+    arg_t arg_c = 0; //arg_num
+    arg_t arg_r = 0; //arg_reg
     char label[32] = "\0";
+
+    union {
+        arg_t value;
+        unsigned char bytes[sizeof(arg_t)];
+    } arg_converter;
 
     if (sscanf(ptr, "%*s %d ", &arg_c))
     {
         if (is_first_pass)
         {
             code[*pc] = cmd | OP_NUM;
-            for (size_t byte = 0; byte < sizeof(cmd_arg_t); ++byte)
+            arg_converter.value = arg_c;
+            
+            for (size_t byte = 0; byte < sizeof(arg_t); ++byte)
             {
                 (*pc)++;
-                code[*pc] = (char)((arg_c >> (8 * byte)) & 0xFF);
+                code[*pc] = (char)arg_converter.bytes[byte];
             }
         }
         else
-            (*pc) += sizeof(cmd_arg_t);
+            (*pc) += sizeof(arg_t);
     }
 
     else if (sscanf(ptr, "%*s R%d ", &arg_r))
@@ -57,10 +64,12 @@ AsmErr_t CmdWithArg(char *code, char *ptr, size_t *pc, CmdCodes cmd, label_t *ar
         if (is_first_pass)
         {
             code[*pc] = cmd | OP_NUM;
-            for (size_t byte = 0; byte < sizeof(cmd_arg_t); ++byte)
+            arg_converter.value = arg_c;
+            
+            for (size_t byte = 0; byte < sizeof(arg_t); ++byte)
             {
                 (*pc)++;
-                code[*pc] = (char)(((-1) >> (8 * byte)) & 0xFF);
+                code[*pc] = (char)arg_converter.bytes[byte];
             }
         }
 
@@ -76,13 +85,13 @@ AsmErr_t CmdWithArg(char *code, char *ptr, size_t *pc, CmdCodes cmd, label_t *ar
                 if (name_hash == label_hash)
                 {
                     code[*pc] = cmd | OP_NUM;
-                    for (size_t byte = 0; byte < sizeof(cmd_arg_t); ++byte)
+                    arg_converter.value = arg_c;
+                    
+                    for (size_t byte = 0; byte < sizeof(arg_t); ++byte)
                     {
                         (*pc)++;
-                        code[*pc] = (char)((arr_labels[lb].pc >> (8 * byte)) & 0xFF);
+                        code[*pc] = (char)arg_converter.bytes[byte];
                     }
-                    
-                    (*pc)++;
 
                     return SUCCESS;
                 }

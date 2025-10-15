@@ -15,15 +15,7 @@ int main()
 
     spuErr_t execut_verd = spuExecutor(&spu);
     if(execut_verd)
-    {
         spuErrPrint(execut_verd);
-        
-        spuDtor(&spu);
-        fclose(ByteCode);
-        fclose(LogFile);
-
-        return 0;
-    }
 
     spuDtor(&spu);
     fclose(ByteCode);

@@ -1,6 +1,9 @@
 #include "stack.h"
 #include "hash.h"
 
+#ifndef STACK_VERIF_HPP
+#define STACK_VERIF_HPP
+
 
 template <typename T>
 StackErr_t ErrDetect(stk_t<T> *stk, StackFunc IncomingFunc, const char *file, const char *func, size_t line)
@@ -69,3 +72,5 @@ StackErr_t StackVerify(stk_t<T> *stk, StackFunc IncomingFunc)
 
     return STK_SUCCESS;
 }
+
+#endif

@@ -1,5 +1,9 @@
 #include "hash.h"
 
+#ifndef HASH_FUNC_HPP
+#define HASH_FUNC_HPP
+
+
 hash_t *hash_arr = {};
 static size_t hash_arr_cap = 0;
 static size_t hash_arr_size = 0;
@@ -81,6 +85,8 @@ StackErr_t HashArrRealloc()
 
     return STK_SUCCESS;
 }
+
+#endif
 
 // void HashArrDtor() // Special function for array of stacks
 // {

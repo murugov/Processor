@@ -1,6 +1,8 @@
 #include "stack.h"
 #include "hash.h"
 
+#ifndef STACK_FUNC_HPP
+#define STACK_FUNC_HPP
 
 template <typename T>
 StackErr_t StackInit(stk_t<T> *stk, const char *name, const char *file, const char *func, size_t line)
@@ -135,3 +137,5 @@ StackErr_t StackDtor(stk_t<T> *stk)
 
     return STK_SUCCESS;
 }
+
+#endif

@@ -1,7 +1,7 @@
         push 1
         push 2
         add
-        jmp end
+        call end
         pop r2
         push r2
         push 777
@@ -10,4 +10,4 @@
 
 end:
         out
-        hlt
+        ret

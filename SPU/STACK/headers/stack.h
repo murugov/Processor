@@ -106,4 +106,9 @@ StackErr_t StackVerify(stk_t<T> *stk, StackFunc IncomingFunc = DEFUALT);
 #define IS_BAD_PTR(ptr) IsBadPtr((void*)ptr)
 
 
+#include "../StackFunc.hpp"
+#include "../StackDump.hpp"
+#include "../StackVerify.hpp"
+#include "../HashFunc.hpp"
+
 #endif

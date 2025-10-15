@@ -25,7 +25,7 @@
 
 #endif    
 
-typedef int cmd_arg_t;
+typedef int arg_t;
 typedef size_t hash_t;
 
 enum AsmErr_t
@@ -98,7 +98,7 @@ enum CmdHash
 
 #define NUM_REG 16
 
-enum Operands //operands_t
+enum operands_t
 {
     OP_NUM = 0x20,
     OP_REG = 0x40,

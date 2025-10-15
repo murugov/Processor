@@ -37,7 +37,7 @@ AsmErr_t Assembler(char **arr_cmd, size_t count_cmd, FILE *ByteCode)
     if (IS_BAD_PTR(ByteCode))
         return BAD_OUTPUT_FILE_PTR;
         
-    char *code = (char*)calloc(count_cmd * (1 + sizeof(cmd_arg_t)) + 1, sizeof(char));
+    char *code = (char*)calloc(count_cmd * (1 + sizeof(arg_t)) + 1, sizeof(char));
     if (IS_BAD_PTR(code))
         return BAD_CODE_PTR;
 
