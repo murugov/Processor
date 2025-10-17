@@ -15,3 +15,5 @@ JA      13      with
 JAE     14      with
 JB      15      with
 JBE     16      with
+CALL    17      with
+RET     18      without

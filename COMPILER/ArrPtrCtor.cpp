@@ -1,6 +1,9 @@
 #include "compile.h"
 #include "TXTreader.h"
 
+// #define DEBUG
+#include "DEBUG.h"
+
 
 void rmcom(char** arr_cmd, size_t *count_line)
 {
@@ -15,7 +18,12 @@ void rmcom(char** arr_cmd, size_t *count_line)
 
 char** ArrPtrCtor(FILE *SourceFile, size_t *count_line)
 {
-    char **arr_ptr = TXTreader(SourceFile, count_line, toupper); // check 
+    char **arr_ptr = TXTreader(SourceFile, count_line, toupper);
+    
+    ON_DEBUG(
+            if (IS_BAD_PTR(arr_ptr))
+                return NULL;
+            )
     // inline спросить у деда
 
     rmcom(arr_ptr, count_line);

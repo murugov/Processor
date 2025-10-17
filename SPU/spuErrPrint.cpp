@@ -14,8 +14,20 @@ void spuErrPrint(spuErr_t verd)
             printf(ANSI_COLOR_RED "Bad pointer to %s!" ANSI_COLOR_RESET, LOG_FILE);
             break;
 
+        case BAD_SPU_PTR:
+            perror(ANSI_COLOR_RED "Bad pointer to spu!" ANSI_COLOR_RESET);
+            break;
+
         case BAD_SPU_CODE_PTR:
             perror(ANSI_COLOR_RED "Error creating code!" ANSI_COLOR_RESET);
+            break;
+
+        case BAD_SPU_REGS_PTR:
+            perror(ANSI_COLOR_RED "Error creating regs!" ANSI_COLOR_RESET);
+            break;
+
+        case BAD_SPU_RAM_PTR:
+            perror(ANSI_COLOR_RED "Error creating RAM!" ANSI_COLOR_RESET);
             break;
 
         case BAD_ARR_PTR:
@@ -24,6 +36,10 @@ void spuErrPrint(spuErr_t verd)
 
         case BAD_ARR_CMD_PC_PTR:
             perror(ANSI_COLOR_RED "Bad pointer to arr_ptr_cmd_pc!\n" ANSI_COLOR_RESET);
+            break;
+
+        case SPU_DTOR_FAIL:
+            perror(ANSI_COLOR_RED "Destruction error!" ANSI_COLOR_RESET);
             break;
 
         case WRONG_FILE_SIZE:
@@ -56,6 +72,10 @@ void spuErrPrint(spuErr_t verd)
             
         case ARG_NEX:
             perror(ANSI_COLOR_RED "Non-existent argument!\n" ANSI_COLOR_RESET);
+            break; 
+
+        case MEM_NEX:
+            perror(ANSI_COLOR_RED "Non-existent memory argument!\n" ANSI_COLOR_RESET);
             break; 
             
         case ERROR_STK:

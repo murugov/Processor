@@ -39,7 +39,7 @@ StackErr_t StackCtor(stk_t<T> *stk, cap_t capacity)
     if(HashArrCtor())
     {
         stk->error = BAD_HASH_ARR_PTR;
-        StackDump(stk, __FILE__, __FUNCTION__, __LINE__);
+        StackDump(stk, __FILE__, __func__, __LINE__);
         
         return STK_ERROR;
     }
@@ -47,7 +47,7 @@ StackErr_t StackCtor(stk_t<T> *stk, cap_t capacity)
     if (HashAdd(stk))
     {
         stk->error = WRONG_HASH;
-        StackDump(stk, __FILE__, __FUNCTION__, __LINE__);
+        StackDump(stk, __FILE__, __func__, __LINE__);
         
         return STK_ERROR;
     }
@@ -81,12 +81,12 @@ template <typename T>
 StackErr_t StackPop(stk_t<T> *stk, T *last_value)
 {
     stk->size--;
-    
+
     if (ERR_DETECT(stk, STK_POP))
         return STK_ERROR;
-
+    
     *last_value = stk->data[stk->size - 1];
-    stk->data[stk->size - 1] = T();
+    stk->data[stk->size - 1] = '\0';
 
     hash_arr[stk->hash_index] = HashFunc(stk);
 
@@ -108,13 +108,13 @@ StackErr_t StackRealloc(stk_t<T> *stk)
         if(IS_BAD_PTR(new_data))
         {
             stk->error = WRONG_REALLOC;
-            StackDump(stk, __FILE__, __FUNCTION__, __LINE__);
+            StackDump(stk, __FILE__, __func__, __LINE__);
 
             return STK_ERROR;
         }
 
         for (size_t i = (size_t)(stk->capacity / 2) - 1; i < (size_t)stk->capacity - 1; ++i)
-            new_data[i] = T();
+            new_data[i] = '\0';
         
         new_data[(size_t)stk->capacity - 1] = CANARY_4;
 
@@ -133,7 +133,6 @@ StackErr_t StackDtor(stk_t<T> *stk)
         return STK_ERROR;
 
     free(stk->data);
-    free(&(hash_arr[stk->hash_index]));
 
     return STK_SUCCESS;
 }

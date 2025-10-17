@@ -1,25 +1,27 @@
 #include "compile.h"
-
-#define SOURCE "./CompileFiles/source.asm"
-#define BYTE_CODE "./CompileFiles/bytecode.asm" // спрятать в макросе
-
+#include "colors.h"
 
 //tokenizations
 
-int main() // argc argv вечерком сделать
+int main(int argc, char *argv[])
 {
-    FILE *SourceFile = fopen(SOURCE, "rb");
-    FILE *ByteCode = fopen(BYTE_CODE, "wb");
-
-    size_t count_line = 0;
-    char **arr_ptr = ArrPtrCtor(SourceFile, &count_line);
-
-    AsmErr_t asm_verd = Assembler(arr_ptr, count_line, ByteCode);
-    AsmErrPrint(asm_verd);
-
-    free(arr_ptr);
-    fclose(SourceFile);
-    fclose(ByteCode);
+    if (argc >= 3)
+    {
+        FILE *SourceFile = fopen(argv[1], "rb");
+        FILE *ByteCode = fopen(argv[2], "wb");
+    
+        size_t count_line = 0;
+        char **arr_ptr = ArrPtrCtor(SourceFile, &count_line);
+    
+        AsmErr_t asm_verd = Assembler(ByteCode, arr_ptr, count_line);
+        AsmErrPrint(SourceFile, ByteCode, asm_verd);
+    
+        free(arr_ptr);
+        fclose(SourceFile);
+        fclose(ByteCode);
+    }
+    else
+        printf(ANSI_COLOR_RED "Incorrect transfer of input files\n" ANSI_COLOR_RESET);
 
     return 0;
 }

@@ -1,56 +1,121 @@
-PUSH 1
-POP RAX
-PUSH 5
-POP RBX
-PUSH 6
-POP RCX
-PUSH RBX
-PUSH RBX
-MUL         ; start solve D
-PUSH 4
-PUSH RAX
-MUL
-PUSH RCX
-MUL
-SUB
-POP RDX
+        in
+        pop r0
+        in
+        pop r1
+        in
+        pop r2
 
-mtka:
-PUSH 0         ; D < 0
-PUSH RDX
-JA 25
-PUSH 0         ; D = 0
-PUSH RDX
-JE 28
-PUSH 2         ; D > 0
-PUSH 1
-JMP 30
-PUSH 0         ; OUT: 0 - zero roots
-OUT
-JMP 53
-PUSH 1.        ; OUT: 1 - one root
-OUT
-JMP 53
-PUSH 0         ; root_1
-PUSH RBX
-SUB
-PUSH RDX
-SQRT
-ADD
-PUSH 2
-PUSH RAX
-MUL
-DIV
-OUT
-PUSH 0         ; root_2
-PUSH RBX
-SUB
-PUSH RDX
-SQRT
-SUB
-PUSH 2
-PUSH RAX
-MUL
-DIV
-OUT
-HLT
+        call discr
+
+        push 0
+        push r0
+        je a_is_zero
+
+        push 0
+        push r3
+        jb no_roots
+
+        push 0
+        push r3
+        je one_root
+
+        jmp two_roots
+
+discr:
+        push r1
+        push r1
+        mul
+
+        push 4
+        push r0
+        mul
+        push r2
+        mul
+
+        sub
+
+        pop r3
+
+        ret
+
+a_is_zero:
+        push 0
+        push r1
+        je b_is_zero
+
+        push 1
+        out 
+
+        push 0
+        push r2
+        sub
+        push r1
+        div
+
+
+        out
+        hlt
+
+b_is_zero:
+        push 0
+        push r2
+        je inf_roots
+
+        jmp no_roots
+
+inf_roots:
+        push -1
+        out
+        hlt
+
+no_roots:
+        push 0
+        out
+        hlt
+
+one_root:
+        push 1
+        out
+
+        push 0
+        push r1
+        sub
+        push 2
+        push r0
+        mul
+        div
+
+        out         ; print root_1
+        hlt
+
+
+two_roots:
+        push 2
+        out
+
+        push 0
+        push r1
+        sub
+        push r3
+        sqrt
+        add
+        push 2
+        push r0
+        mul
+        div
+
+        out         ; print root_1
+
+        push 0
+        push r1
+        sub
+        push r3
+        sqrt
+        sub
+        push 2
+        push r0
+        mul
+        div
+
+        out         ; print root_1
+        hlt

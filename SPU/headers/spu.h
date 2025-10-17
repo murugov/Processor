@@ -8,7 +8,9 @@
 #define LOG_FILE "./ReportFiles/LogFile.log"
 
 #define SIGNATURE "AM"
-#define VERSION 4
+#define VERSION 5
+
+#include "CmdCodesEnums.h"
 
 enum spuErr_t
 {
@@ -16,68 +18,72 @@ enum spuErr_t
     ERROR               = 1,
     BAD_INPUT_FILE_PTR  = 2,
     BAD_OUTPUT_FILE_PTR = 3,
-    BAD_SPU_PTR         = 18,
-    BAD_SPU_CODE_PTR    = 4,
-    BAD_SPU_REGS_PTR    = 17,
-    BAD_ARR_PTR         = 5,
-    BAD_ARR_CMD_PC_PTR  = 6,
-    SPU_DTOR_FAIL       = 19,
-    WRONG_FILE_SIZE     = 7,
-    WRONG_STK           = 8,
-    WRONG_SIGN          = 9,
-    WRONG_VERS          = 10,
-    UNKNOWN_CMD         = 11,
-    DIV_BY_ZERO         = 12,
-    SQRT_NEG            = 13,
-    ARG_NEX             = 14,
-    STOP_BY_HLT         = 15,
-    ERROR_STK           = 16
+    BAD_SPU_PTR         = 4,
+    BAD_SPU_CODE_PTR    = 5,
+    BAD_SPU_REGS_PTR    = 6,
+    BAD_SPU_RAM_PTR     = 7,
+    BAD_ARR_PTR         = 8,
+    BAD_ARR_CMD_PC_PTR  = 9,
+    SPU_DTOR_FAIL       = 10,
+    WRONG_FILE_SIZE     = 11,
+    WRONG_STK           = 12,
+    WRONG_SIGN          = 13,
+    WRONG_VERS          = 14,
+    UNKNOWN_CMD         = 15,
+    DIV_BY_ZERO         = 16,
+    SQRT_NEG            = 17,
+    ARG_NEX             = 18,
+    MEM_NEX             = 19,
+    STOP_BY_HLT         = 20,
+    ERROR_STK           = 21
 };
 
-enum CmdCodes //это будет в отдельном файле, когда 
-{
-    CMD_HLT = 0x00,
-    CMD_PUSH = 0x01,
-    CMD_POP = 0x02,
-    CMD_ADD = 0x03,
-    CMD_SUB = 0x04,
-    CMD_MUL = 0x05,
-    CMD_DIV = 0x06,
-    CMD_SQRT = 0x07,
-    CMD_IN = 0x08,
-    CMD_OUT = 0x09,
-    CMD_JMP = 0x0A,
-    CMD_JE = 0x0B,
-    CMD_JNE = 0x0C,
-    CMD_JA = 0x0D,
-    CMD_JAE = 0x0E,
-    CMD_JB = 0x0F,
-    CMD_JBE = 0x10,
-    CMD_CALL = 0x11,
-    CMD_RET = 0x12
-};
+// enum CmdCodes //это будет в отдельном файле, когда 
+// {
+//     CMD_HLT = 0x00,
+//     CMD_PUSH = 0x01,
+//     CMD_POP = 0x02,
+//     CMD_ADD = 0x03,
+//     CMD_SUB = 0x04,
+//     CMD_MUL = 0x05,
+//     CMD_DIV = 0x06,
+//     CMD_SQRT = 0x07,
+//     CMD_IN = 0x08,
+//     CMD_OUT = 0x09,
+//     CMD_JMP = 0x0A,
+//     CMD_JE = 0x0B,
+//     CMD_JNE = 0x0C,
+//     CMD_JA = 0x0D,
+//     CMD_JAE = 0x0E,
+//     CMD_JB = 0x0F,
+//     CMD_JBE = 0x10,
+//     CMD_CALL = 0x11,
+//     CMD_RET = 0x12
+// };
 
-enum Operands
+enum operands_t
 {
     OP_NUM = 0x20,
     OP_REG = 0x40,
     OP_MEM = 0x80
 };
 
-typedef int cmd_arg_t;
+typedef int arg_t;
 typedef size_t hash_t;
 
+#define NUM_REG 16
+#define NUM_RAM 32
 
 struct spu_t
 {
-    char *code;
+    unsigned char *code;
     size_t pc;
-    stk_t<int> stk;
-    cmd_arg_t *regs;
+    stk_t<arg_t> stk;
+    arg_t *regs;
     stk_t<unsigned long> stk_ret;
+    arg_t *ram;
 };
 
-#define NUM_REG 16
 
 spuErr_t FUNC_CMD_HLT(spu_t *spu);
 spuErr_t FUNC_CMD_PUSH(spu_t *spu);
@@ -106,7 +112,7 @@ struct WrapCmd
     CmdCodes cmd; 
 };
 
-spuErr_t SignVersVerify(char* code);
+spuErr_t SignVersVerify(unsigned char* code);
 spuErr_t spuCtor(spu_t *spu, FILE *stream);
 spuErr_t spuExecutor(spu_t *spu);
 spuErr_t spuDtor(spu_t *spu);

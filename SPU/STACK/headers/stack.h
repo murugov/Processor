@@ -100,15 +100,14 @@ StackErr_t StackRealloc(stk_t<T> *stk);
 template <typename T>
 StackErr_t StackVerify(stk_t<T> *stk, StackFunc IncomingFunc = DEFUALT);
 
-#define ERR_DETECT(stk, IncomingFunc)  ErrDetect(stk, IncomingFunc, __FILE__, __FUNCTION__, __LINE__)
+#define ERR_DETECT(stk, IncomingFunc)  ErrDetect(stk, IncomingFunc, __FILE__, __func__, __LINE__)
 #define ERR_CHECK(err_code)  ((stk->error) & err_code) == err_code
-#define STACK_INIT(stk, capacity)  StackInit(stk, #stk, __FILE__, __FUNCTION__, __LINE__); StackCtor(stk, capacity)
+#define STACK_INIT(stk, capacity)  StackInit(stk, #stk, __FILE__, __func__, __LINE__); StackCtor(stk, capacity)
 #define IS_BAD_PTR(ptr) IsBadPtr((void*)ptr)
 
 
 #include "../StackFunc.hpp"
 #include "../StackDump.hpp"
 #include "../StackVerify.hpp"
-#include "../HashFunc.hpp"
 
 #endif

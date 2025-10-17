@@ -2,16 +2,16 @@
 #include "colors.h"
 
 
-void AsmErrPrint(AsmErr_t verd)
+void AsmErrPrint(FILE *SourceFile, FILE *ByteCode, AsmErr_t verd)
 {
     switch (verd)
     {
         case BAD_INPUT_FILE_PTR:
-            printf(ANSI_COLOR_RED "Bad pointer to %s!" ANSI_COLOR_RESET, SOURCE);
+            printf(ANSI_COLOR_RED "Bad pointer to %s!" ANSI_COLOR_RESET, (char*)SourceFile);
             break;
 
         case BAD_OUTPUT_FILE_PTR:
-            printf(ANSI_COLOR_RED "Bad pointer to %s!" ANSI_COLOR_RESET, BYTE_CODE);
+            printf(ANSI_COLOR_RED "Bad pointer to %s!" ANSI_COLOR_RESET, (char*)ByteCode);
             break;
 
         case BAD_BUFFER_PTR:
@@ -52,6 +52,10 @@ void AsmErrPrint(AsmErr_t verd)
 
         case REG_NEX:
             perror(ANSI_COLOR_RED "Non-existent register!\n" ANSI_COLOR_RESET);
+            break; 
+
+        case MEM_NEX:
+            perror(ANSI_COLOR_RED "Non-existent memory block!\n" ANSI_COLOR_RESET);
             break; 
 
         case UNKNOWN_CMD:

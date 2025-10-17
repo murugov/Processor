@@ -75,22 +75,22 @@ void StackDump(stk_t<T> *stk, const char *file, const char *func, size_t line)
 
     fprintf(LogFile, "\n");
 
-    if (ERR_CHECK(BAD_DATA_PTR) == STK_SUCCESS && stk->capacity > 2 && stk->size > 2)
-    {
-        fprintf(LogFile, "data[%p]\n", stk->data);
-        fprintf(LogFile, "{\n");
+    // if (ERR_CHECK(BAD_DATA_PTR) == STK_SUCCESS && stk->capacity > 2 && stk->size > 2)
+    // {
+    //     fprintf(LogFile, "data[%p]\n", stk->data);
+    //     fprintf(LogFile, "{\n");
 
-        fprintf(LogFile, "\t[0] = CANARY\n");
+    //     fprintf(LogFile, "\t[0] = CANARY\n");
 
-        for (size_t i = 1; i < (size_t)stk->capacity - 1; ++i)
-        {
-            fprintf(LogFile, "\t%s[%zu] = %d\n", (i <= (size_t)stk->size - 2) ? "*": "", i, stk->data[i]);
-        }
+    //     for (size_t i = 1; i < (size_t)stk->capacity - 1; ++i)
+    //     {
+    //         fprintf(LogFile, "\t%s[%zu] = %d\n", (i <= (size_t)stk->size - 2) ? "*": "", i, stk->data[i]);
+    //     }
 
-        fprintf(LogFile, "\t[%zd] = CANARY\n", stk->capacity - 1);
+    //     fprintf(LogFile, "\t[%zd] = CANARY\n", stk->capacity - 1);
 
-        fprintf(LogFile, "}\n");
-    }
+    //     fprintf(LogFile, "}\n");
+    // }
 
     fprintf(LogFile, "\n---------------------------------------------------------------------------------------------------------------------------\n\n");
 }

@@ -2,12 +2,12 @@
 #include <ctype.h>
 #include "IsBadPtr.h"
 
-
+#include <stdio.h>
 size_t LineCounter(char* buffer)
 {
     if (IsBadPtr((void*)buffer))
         return 0;
-    
+
     size_t count_line = 0;
     char* line_start = buffer;
     char* next_n = buffer;
@@ -42,6 +42,6 @@ size_t LineCounter(char* buffer)
             }
         }
     }
-    
+    // printf("count_line = %zu\n", count_line);
     return count_line;
 }

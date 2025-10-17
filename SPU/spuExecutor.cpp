@@ -2,30 +2,7 @@
 #include "colors.h"
 #include "SizeFile.h"
 
-WrapCmd spu_instr_set[] = 
-{
-    {FUNC_CMD_HLT, CMD_HLT}, // похожее название
-    {FUNC_CMD_PUSH, CMD_PUSH},
-    {FUNC_CMD_POP, CMD_POP},
-    {FUNC_CMD_ADD, CMD_ADD},
-    {FUNC_CMD_SUB, CMD_SUB},
-    {FUNC_CMD_MUL, CMD_MUL},
-    {FUNC_CMD_DIV, CMD_DIV},
-    {FUNC_CMD_SQRT, CMD_SQRT},
-    {FUNC_CMD_IN, CMD_IN},
-    {FUNC_CMD_OUT, CMD_OUT},
-    {FUNC_CMD_JMP, CMD_JMP},
-    {FUNC_CMD_JE, CMD_JE},
-    {FUNC_CMD_JNE, CMD_JNE},
-    {FUNC_CMD_JA, CMD_JA},
-    {FUNC_CMD_JAE, CMD_JAE},
-    {FUNC_CMD_JB, CMD_JB},
-    {FUNC_CMD_JBE, CMD_JBE}, //отдельная функция и потом через define
-    {FUNC_CMD_CALL, CMD_CALL},
-    {FUNC_CMD_RET, CMD_RET}
-};
-
-#define LEN_INSTR_SET sizeof(spu_instr_set) / sizeof(*spu_instr_set)
+#include "SpuInstrSet.cpp"
 
 
 spuErr_t spuCtor(spu_t *spu, FILE *stream)
@@ -37,11 +14,11 @@ spuErr_t spuCtor(spu_t *spu, FILE *stream)
     if (file_size < 0)
         return WRONG_FILE_SIZE;
 
-    spu->code = (char*)calloc((size_t)file_size + 1, sizeof(char));
+    spu->code = (unsigned char*)calloc((size_t)file_size + 1, sizeof(unsigned char));
     if (IS_BAD_PTR(spu->code))
         return BAD_SPU_CODE_PTR;
 
-    fread(spu->code, sizeof(char), (size_t)file_size, stream);
+    fread(spu->code, sizeof(unsigned char), (size_t)file_size, stream);
 
     spuErr_t file_ext_verd = SignVersVerify(spu->code);
     if (file_ext_verd)
@@ -49,16 +26,20 @@ spuErr_t spuCtor(spu_t *spu, FILE *stream)
 
     spu->pc = (size_t)file_size;
 
-    STACK_INIT(&spu->stk, 32);
+    STACK_INIT(&spu->stk, 16);
 
     if (spu->stk.error != SUCCESS)
         return WRONG_STK;
 
-    spu->regs = (cmd_arg_t*)calloc(NUM_REG, sizeof(cmd_arg_t));
+    spu->regs = (arg_t*)calloc(NUM_REG, sizeof(arg_t));
     if (IS_BAD_PTR(spu->regs))
         return BAD_SPU_REGS_PTR;
 
     STACK_INIT(&spu->stk_ret, 16);
+
+    spu->ram = (arg_t*)calloc(NUM_RAM, sizeof(arg_t));
+    if (IS_BAD_PTR(spu->ram))
+        return BAD_SPU_RAM_PTR;
 
     return SUCCESS;
 }
@@ -75,13 +56,15 @@ spuErr_t spuExecutor(spu_t *spu)
 
         for (size_t wrap = 0; wrap < LEN_INSTR_SET; ++wrap)
         {
-            char cmd = (spu->code)[spu->pc] & 0x1F;
+            unsigned char cmd = (spu->code[spu->pc]) & 0x1F;
 
             if (spu_instr_set[wrap].cmd == cmd)
             {
                 calc_verd = (spu_instr_set[wrap].func)(spu);
                 if (calc_verd != SUCCESS)
                     return calc_verd;
+                    
+                break;
             }
         }
 
@@ -99,18 +82,19 @@ spuErr_t spuExecutor(spu_t *spu)
 spuErr_t spuDtor(spu_t *spu)
 {
     free(spu->code);
-    StackDtor(&spu->stk);
+    StackDtor(&spu->stk); // можно написать доп проверку на dtor
     free(spu->regs);
     StackDtor(&spu->stk_ret);
+    HashArrDtor();
 
     return SUCCESS;
 }
 
 
-spuErr_t SignVersVerify(char* code)
+spuErr_t SignVersVerify(unsigned char* code)
 {
     const char* signature = SIGNATURE;
-    char version = VERSION;
+    unsigned char version = VERSION;
 
     if (signature[0] != code[0] || signature[1] != code[1])
         return WRONG_SIGN;
