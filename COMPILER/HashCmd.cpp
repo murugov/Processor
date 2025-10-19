@@ -1,10 +1,13 @@
-#include "compile.h"
+#include <stdio.h>
+
+#define MAX_LEN_CMD 16
 
 // #define DEBUG
 #include "DEBUG.h"
 
+typedef size_t hash_t;
 
-hash_t HashCmd(const char *cmd)
+hash_t HashCmd(const char *line)
 {
     ON_DEBUG(
             if (IS_BAD_PTR(cmd))
@@ -12,11 +15,16 @@ hash_t HashCmd(const char *cmd)
             )
     
     hash_t new_hash = 0;
-
-    while (*cmd != ' ' && *cmd != '\0' && *cmd != ':' && *cmd != '\t')
+    char cmd[MAX_LEN_CMD] = {0};
+    
+    if(sscanf(line, "%s ", cmd) != 1)
+        return 0;
+    
+    const char* ptr = cmd;
+    while (*ptr != '\0')
     {
-        new_hash = (new_hash << 5) - new_hash + (hash_t)(*cmd);
-        cmd++;
+        new_hash = (new_hash << 5) - new_hash + (hash_t)(*ptr);
+        ptr++;
     }
 
     return new_hash;

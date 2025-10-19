@@ -3,25 +3,25 @@
 
 const WrapCmd asm_instr_set[] =
 {
-	{CmdWithoutArg, HASH_HLT,  CMD_HLT},
-	{CmdWithArg, HASH_PUSH,  CMD_PUSH},
-	{CmdWithArg, HASH_POP,  CMD_POP},
-	{CmdWithoutArg, HASH_ADD,  CMD_ADD},
-	{CmdWithoutArg, HASH_SUB,  CMD_SUB},
-	{CmdWithoutArg, HASH_MUL,  CMD_MUL},
-	{CmdWithoutArg, HASH_DIV,  CMD_DIV},
-	{CmdWithoutArg, HASH_SQRT,  CMD_SQRT},
-	{CmdWithoutArg, HASH_IN,  CMD_IN},
-	{CmdWithoutArg, HASH_OUT,  CMD_OUT},
-	{CmdWithArg, HASH_JMP,  CMD_JMP},
-	{CmdWithArg, HASH_JE,  CMD_JE},
-	{CmdWithArg, HASH_JNE,  CMD_JNE},
-	{CmdWithArg, HASH_JA,  CMD_JA},
-	{CmdWithArg, HASH_JAE,  CMD_JAE},
-	{CmdWithArg, HASH_JB,  CMD_JB},
-	{CmdWithArg, HASH_JBE,  CMD_JBE},
-	{CmdWithArg, HASH_CALL,  CMD_CALL},
-	{CmdWithoutArg, HASH_RET,  CMD_RET}
+	{CmdWithoutArg,    HASH_IN,       CMD_IN},
+	{CmdWithArg,       HASH_JA,       CMD_JA},
+	{CmdWithArg,       HASH_JB,       CMD_JB},
+	{CmdWithArg,       HASH_JE,       CMD_JE},
+	{CmdWithoutArg,    HASH_ADD,      CMD_ADD},
+	{CmdWithoutArg,    HASH_DIV,      CMD_DIV},
+	{CmdWithoutArg,    HASH_HLT,      CMD_HLT},
+	{CmdWithArg,       HASH_JAE,      CMD_JAE},
+	{CmdWithArg,       HASH_JBE,      CMD_JBE},
+	{CmdWithArg,       HASH_JMP,      CMD_JMP},
+	{CmdWithArg,       HASH_JNE,      CMD_JNE},
+	{CmdWithoutArg,    HASH_MUL,      CMD_MUL},
+	{CmdWithoutArg,    HASH_OUT,      CMD_OUT},
+	{CmdWithArg,       HASH_POP,      CMD_POP},
+	{CmdWithoutArg,    HASH_RET,      CMD_RET},
+	{CmdWithoutArg,    HASH_SUB,      CMD_SUB},
+	{CmdWithArg,       HASH_CALL,     CMD_CALL},
+	{CmdWithArg,       HASH_PUSH,     CMD_PUSH},
+	{CmdWithoutArg,    HASH_SQRT,     CMD_SQRT}
 };
 
 #define LEN_INSTR_SET sizeof(asm_instr_set) / sizeof(*asm_instr_set)

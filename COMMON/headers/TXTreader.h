@@ -3,6 +3,6 @@
 
 #include <stdio.h>
 
-char** TXTreader(FILE *SourceFile, size_t *count_line, int (*convert)(int));
+char** TXTreader(FILE *SourceFile, char* buffer, size_t *count_line, int (*convert)(int));
 
 #endif

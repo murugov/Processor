@@ -9,14 +9,34 @@ int main(int argc, char *argv[])
     {
         FILE *SourceFile = fopen(argv[1], "rb");
         FILE *ByteCode = fopen(argv[2], "wb");
+
+        if (IS_BAD_PTR(SourceFile))
+        {
+            perror(ANSI_COLOR_RED "Bad pointer SourceFile" ANSI_COLOR_RESET);
+            return 1;
+        }
+        if (IS_BAD_PTR(ByteCode))
+        {
+            perror(ANSI_COLOR_RED "Bad pointer ByteCode" ANSI_COLOR_RESET);
+            return 1;
+        }
+
+        if (VerifyAsmInstrSetSort() != SUCCESS)
+        {
+            printf(ANSI_COLOR_RED "Not sorted asm_instr_set!\n" ANSI_COLOR_RESET);
+            printf(ANSI_COLOR_RED "TODO: generation AsmInstrSet.cpp with using \"make run-gen\"!\n" ANSI_COLOR_RESET);
+            return 1;
+        }
     
+        char *buffer = NULL;
         size_t count_line = 0;
-        char **arr_ptr = ArrPtrCtor(SourceFile, &count_line);
+        char **arr_ptr = ArrPtrCtor(SourceFile, buffer, &count_line);
     
         AsmErr_t asm_verd = Assembler(ByteCode, arr_ptr, count_line);
         AsmErrPrint(SourceFile, ByteCode, asm_verd);
     
-        free(arr_ptr);
+        AsmDtor(buffer, arr_ptr);
+
         fclose(SourceFile);
         fclose(ByteCode);
     }

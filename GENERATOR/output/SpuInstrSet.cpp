@@ -3,25 +3,25 @@
 
 const WrapCmd spu_instr_set[] =
 {
-	{FUNC_CMD_HLT,  CMD_HLT},
-	{FUNC_CMD_PUSH,  CMD_PUSH},
-	{FUNC_CMD_POP,  CMD_POP},
-	{FUNC_CMD_ADD,  CMD_ADD},
-	{FUNC_CMD_SUB,  CMD_SUB},
-	{FUNC_CMD_MUL,  CMD_MUL},
-	{FUNC_CMD_DIV,  CMD_DIV},
-	{FUNC_CMD_SQRT,  CMD_SQRT},
-	{FUNC_CMD_IN,  CMD_IN},
-	{FUNC_CMD_OUT,  CMD_OUT},
-	{FUNC_CMD_JMP,  CMD_JMP},
-	{FUNC_CMD_JE,  CMD_JE},
-	{FUNC_CMD_JNE,  CMD_JNE},
-	{FUNC_CMD_JA,  CMD_JA},
-	{FUNC_CMD_JAE,  CMD_JAE},
-	{FUNC_CMD_JB,  CMD_JB},
-	{FUNC_CMD_JBE,  CMD_JBE},
-	{FUNC_CMD_CALL,  CMD_CALL},
-	{FUNC_CMD_RET,  CMD_RET}
+	{FUNC_CMD_HLT,      CMD_HLT},
+	{FUNC_CMD_PUSH,     CMD_PUSH},
+	{FUNC_CMD_POP,      CMD_POP},
+	{FUNC_CMD_ADD,      CMD_ADD},
+	{FUNC_CMD_SUB,      CMD_SUB},
+	{FUNC_CMD_MUL,      CMD_MUL},
+	{FUNC_CMD_DIV,      CMD_DIV},
+	{FUNC_CMD_SQRT,     CMD_SQRT},
+	{FUNC_CMD_IN,       CMD_IN},
+	{FUNC_CMD_OUT,      CMD_OUT},
+	{FUNC_CMD_JMP,      CMD_JMP},
+	{FUNC_CMD_JE,       CMD_JE},
+	{FUNC_CMD_JNE,      CMD_JNE},
+	{FUNC_CMD_JA,       CMD_JA},
+	{FUNC_CMD_JAE,      CMD_JAE},
+	{FUNC_CMD_JB,       CMD_JB},
+	{FUNC_CMD_JBE,      CMD_JBE},
+	{FUNC_CMD_CALL,     CMD_CALL},
+	{FUNC_CMD_RET,      CMD_RET}
 };
 
 #define LEN_INSTR_SET sizeof(spu_instr_set) / sizeof(*spu_instr_set)

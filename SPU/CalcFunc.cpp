@@ -108,6 +108,17 @@ spuErr_t ReadArg(spu_t *spu, arg_t *val)
     return ARG_NEX;
 }
 
+// {
+// int cmd = code[pc++];
+
+// int arg = 0;
+// if (cmd & 0x20) { arg +=.      *(int*) code;  code += sizeof (int);  }
+// if (cmd & 0x40) { arg += regs [*(char*)code]; code += sizeof (char); }
+// if (cmd & 0x80) { arg  = ram  [arg]; }
+
+// return struct_array [cmd & 0x1f] . func (spu, arg);
+// }
+
 #define JWC(spu, condition) \
     do { \
         ON_DEBUG( \

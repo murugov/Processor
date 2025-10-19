@@ -42,6 +42,5 @@ size_t LineCounter(char* buffer)
             }
         }
     }
-    // printf("count_line = %zu\n", count_line);
     return count_line;
 }

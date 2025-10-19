@@ -12,7 +12,7 @@ int no_change(int c)
     return c;
 }
 
-char** TXTreader(FILE *SourceFile, size_t *count_line, int (*convert)(int))
+char** TXTreader(FILE *SourceFile, char* buffer, size_t *count_line, int (*convert)(int))
 {
     if (IsBadPtr((void*)SourceFile))
         return NULL;
@@ -21,7 +21,7 @@ char** TXTreader(FILE *SourceFile, size_t *count_line, int (*convert)(int))
     if (file_size < 0)
         return NULL;
 
-    char* buffer = (char*)calloc((size_t)file_size + 1, sizeof(char));
+    buffer = (char*)calloc((size_t)file_size + 1, sizeof(char));
     if (IsBadPtr((void*)buffer))
         return NULL;
 

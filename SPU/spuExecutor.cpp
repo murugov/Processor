@@ -26,7 +26,7 @@ spuErr_t spuCtor(spu_t *spu, FILE *stream)
 
     spu->pc = (size_t)file_size;
 
-    STACK_INIT(&spu->stk, 16);
+    STACK_INIT(&spu->stk, START_STK_CAP);
 
     if (spu->stk.error != SUCCESS)
         return WRONG_STK;
@@ -35,7 +35,7 @@ spuErr_t spuCtor(spu_t *spu, FILE *stream)
     if (IS_BAD_PTR(spu->regs))
         return BAD_SPU_REGS_PTR;
 
-    STACK_INIT(&spu->stk_ret, 16);
+    STACK_INIT(&spu->stk_ret, START_STK_CAP);
 
     spu->ram = (arg_t*)calloc(NUM_RAM, sizeof(arg_t));
     if (IS_BAD_PTR(spu->ram))
@@ -56,7 +56,7 @@ spuErr_t spuExecutor(spu_t *spu)
 
         for (size_t wrap = 0; wrap < LEN_INSTR_SET; ++wrap)
         {
-            unsigned char cmd = (spu->code[spu->pc]) & 0x1F;
+            unsigned char cmd = (spu->code[spu->pc]) & 0x1F; // new_name cmd_mask
 
             if (spu_instr_set[wrap].cmd == cmd)
             {
@@ -85,6 +85,7 @@ spuErr_t spuDtor(spu_t *spu)
     StackDtor(&spu->stk); // можно написать доп проверку на dtor
     free(spu->regs);
     StackDtor(&spu->stk_ret);
+    free(spu->ram);
     HashArrDtor();
 
     return SUCCESS;

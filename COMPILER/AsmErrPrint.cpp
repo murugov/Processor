@@ -50,6 +50,10 @@ void AsmErrPrint(FILE *SourceFile, FILE *ByteCode, AsmErr_t verd)
             perror(ANSI_COLOR_RED "Error filling array code in function CmdWithoutArg!\n" ANSI_COLOR_RESET);
             break;
 
+        case ADD_LABEL_FAIL:
+            perror(ANSI_COLOR_RED "Error adding label to arr_labels in function AddLabel!\n" ANSI_COLOR_RESET);
+            break;
+
         case REG_NEX:
             perror(ANSI_COLOR_RED "Non-existent register!\n" ANSI_COLOR_RESET);
             break; 

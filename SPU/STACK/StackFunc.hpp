@@ -4,6 +4,7 @@
 #ifndef STACK_FUNC_HPP
 #define STACK_FUNC_HPP
 
+//template <typename stackElem_T>
 template <typename T>
 StackErr_t StackInit(stk_t<T> *stk, const char *name, const char *file, const char *func, size_t line)
 {
