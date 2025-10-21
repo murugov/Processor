@@ -8,35 +8,38 @@
 #define LOG_FILE "./ReportFiles/LogFile.log"
 
 #define SIGNATURE "AM"
-#define VERSION 5
+#define VERSION   5
 
 #include "CmdCodesEnums.h"
 
 enum spuErr_t
 {
-    SUCCESS             = 0,
-    ERROR               = 1,
-    BAD_INPUT_FILE_PTR  = 2,
-    BAD_OUTPUT_FILE_PTR = 3,
-    BAD_SPU_PTR         = 4,
-    BAD_SPU_CODE_PTR    = 5,
-    BAD_SPU_REGS_PTR    = 6,
-    BAD_SPU_RAM_PTR     = 7,
-    BAD_ARR_PTR         = 8,
-    BAD_ARR_CMD_PC_PTR  = 9,
-    SPU_DTOR_FAIL       = 10,
-    WRONG_FILE_SIZE     = 11,
-    WRONG_STK           = 12,
-    WRONG_SIGN          = 13,
-    WRONG_VERS          = 14,
-    UNKNOWN_CMD         = 15,
-    DIV_BY_ZERO         = 16,
-    SQRT_NEG            = 17,
-    ARG_NEX             = 18,
-    MEM_NEX             = 19,
-    STOP_BY_HLT         = 20,
-    ERROR_STK           = 21
+    SUCCESS             = 0x00,
+    ERROR               = 0x01,
+    BAD_INPUT_FILE_PTR  = 0x02,
+    BAD_OUTPUT_FILE_PTR = 0x03,
+    BAD_SPU_PTR         = 0x04,
+    BAD_SPU_CODE_PTR    = 0x05,
+    BAD_SPU_REGS_PTR    = 0x06,
+    BAD_SPU_RAM_PTR     = 0x07,
+    BAD_ARR_PTR         = 0x08,
+    BAD_ARR_CMD_PC_PTR  = 0x09,
+    SPU_DTOR_FAIL       = 0x0A,
+    WRONG_FILE_SIZE     = 0x0B,
+    WRONG_STK           = 0x0C,
+    WRONG_SIGN          = 0x0D,
+    WRONG_VERS          = 0x0E,
+    UNKNOWN_CMD         = 0x0F,
+    DIV_BY_ZERO         = 0x10,
+    SQRT_NEG            = 0x11,
+    ARG_NEX             = 0x12,
+    MEM_NEX             = 0x13,
+    STOP_BY_HLT         = 0x14,
+    ERROR_STK           = 0x15
 };
+
+
+#define MASK_CMD 0x1F
 
 enum operands_t
 {
@@ -45,21 +48,22 @@ enum operands_t
     OP_MEM = 0x80
 };
 
-typedef int arg_t;
-typedef size_t hash_t;
+typedef int           arg_t;
+typedef size_t        hash_t;
+typedef unsigned char byte_t;
 
 #define START_STK_CAP 16
-#define NUM_REG 16
-#define NUM_RAM 128
+#define NUM_REG       16
+#define NUM_RAM       128
 
 struct spu_t
 {
-    unsigned char *code;
-    size_t pc;
-    stk_t<arg_t> stk;
-    arg_t *regs;
+    byte_t               *code;
+    size_t               pc;
+    stk_t<arg_t>         stk;
+    arg_t                *regs;
     stk_t<unsigned long> stk_ret;
-    arg_t *ram;
+    arg_t                *ram;
 };
 
 
@@ -84,16 +88,40 @@ spuErr_t FUNC_CMD_CALL(spu_t *spu);
 spuErr_t FUNC_CMD_RET(spu_t *spu);
 typedef spuErr_t (*func_t)(spu_t *spu);
 
+spuErr_t ReadArg(spu_t *spu, arg_t *val);
+spuErr_t SpuArgIsConstNum(spu_t *spu, arg_t *val);
+spuErr_t SpuArgIsReg(spu_t *spu, arg_t *val);
+spuErr_t SpuArgIsMem(spu_t *spu, arg_t *val);
+
+
 struct WrapCmd
 {
-    func_t func;
+    func_t   func;
     CmdCodes cmd; 
 };
 
-spuErr_t SignVersVerify(unsigned char* code);
+spuErr_t VerifySpuInstrSetSort();
+spuErr_t SignVersVerify(byte_t* code);
 spuErr_t spuCtor(spu_t *spu, FILE *stream);
 spuErr_t spuExecutor(spu_t *spu);
+spuErr_t CmdSearch(byte_t cmd, ssize_t *index);
 spuErr_t spuDtor(spu_t *spu);
 void spuErrPrint(spuErr_t verd);
+
+#define CURRENT_BIT(spu, op) (spu->code[spu->pc] & op) == op
+
+#define STACK_PUSH_(stk, elem) \
+    do { \
+        if (StackPush(stk, elem)) \
+            return ERROR_STK;\
+    } while(0)
+
+#define STACK_POP_(stk, elem) \
+    do { \
+        if (StackPop(stk, elem)) \
+            return ERROR_STK;\
+    } while(0)
+
+#include "BinSearch.hpp"
 
 #endif

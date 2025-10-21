@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
         size_t count_line = 0;
         char **arr_ptr = ArrPtrCtor(SourceFile, buffer, &count_line);
     
-        AsmErr_t asm_verd = Assembler(ByteCode, arr_ptr, count_line);
-        AsmErrPrint(SourceFile, ByteCode, asm_verd);
+        AsmErr_t asm_verd = CodeCtor(ByteCode, arr_ptr, count_line);
+        AsmErrPrint(argv[1], argv[2], asm_verd);
     
         AsmDtor(buffer, arr_ptr);
 

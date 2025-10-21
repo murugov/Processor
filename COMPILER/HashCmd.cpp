@@ -1,11 +1,9 @@
 #include <stdio.h>
-
-#define MAX_LEN_CMD 16
+#include "compile.h"
 
 // #define DEBUG
 #include "DEBUG.h"
 
-typedef size_t hash_t;
 
 hash_t HashCmd(const char *line)
 {

@@ -12,14 +12,19 @@
 #define SIGNATURE  {'A', 'M'}
 #define VERSION    5
 
-typedef int arg_t;
-typedef size_t hash_t;
+#define NUM_REG         16
+#define MAX_LEN_CMD     16
+#define MAX_LEN_LABEL   16
+#define HASH_TABEL_SIZE 2048
+
+typedef int           arg_t;
+typedef               size_t hash_t;
 typedef unsigned char byte_t;
 
 struct sign_t
 {
     const char signature[2];
-    byte_t vers;
+    byte_t     vers;
 };
 
 #include "CmdCodesEnums.h"
@@ -39,14 +44,13 @@ enum AsmErr_t
     CMD_NUM_FAIL         = 0x0A,
     CMD_WITH_ARG_FAIL    = 0x0B,
     CMD_WITHOUT_ARG_FAIL = 0x0C,
-    ADD_LABEL_FAIL       = 0x0D,
+    LINE_SIZE_EXCEED     = 0x0D,
     REG_NEX              = 0x0E,
     MEM_NEX              = 0x0F,
     UNKNOWN_CMD          = 0x10,
-    UNKNOWN_LABEL        = 0x11
+    UNKNOWN_LABEL        = 0x11,
+    RE_LABEL             = 0x12
 };
-
-#define NUM_REG 16
 
 enum operands_t
 {
@@ -58,49 +62,54 @@ enum operands_t
 struct label_t
 {
     const char* name;
-    hash_t hash;
-    size_t pc;
+    hash_t      hash;
+    size_t      pc;
 };
 
 
-// struct asm_context
-// {
-//     unsigned char *code;
-//     char **arr_ptr; 
-//     size_t count_cmd;
-//     char *ptr;
-//     size_t pc;
-//     CmdCodes cmd;
-//     label_t *arr_labels;
-//     size_t count_labels;
-//     bool is_first_pass;
-// };
+struct asm_context
+{
+    byte_t   *code;
+    char     *ptr;
+    size_t   pc;
+    CmdCodes cmd;
+    label_t  *arr_labels;
+    size_t   count_labels;
+};
 
-// AsmErr_t CmdWithArg(asm_context* write_params);
-// AsmErr_t CmdWithoutArg(asm_context* write_params);
-// typedef AsmErr_t (*func_t)(asm_context* write_params);
+AsmErr_t CmdWithArg(asm_context *write_params);
+AsmErr_t CmdWithoutArg(asm_context *write_params);
+typedef AsmErr_t (*func_t)(asm_context *write_params);
 
-AsmErr_t CmdWithArg(byte_t *code, char *ptr, size_t *pc, CmdCodes cmd, label_t *arr_labels, size_t *count_labels, bool is_first_pass);
-AsmErr_t CmdWithoutArg(byte_t *code, char *ptr, size_t *pc, CmdCodes cmd, label_t *arr_labels, size_t *count_labels, bool is_first_pass);
-typedef AsmErr_t (*func_t)(byte_t *code, char *ptr, size_t *pc, CmdCodes cmd, label_t *arr_labels, size_t *count_labels, bool is_first_pass);
+AsmErr_t ArgIsConstNum(asm_context *write_params);
+AsmErr_t ArgIsReg(asm_context *write_params);
+AsmErr_t ArgIsMem(asm_context *write_params);
+AsmErr_t ArgIsLabel(asm_context *write_params);
+AsmErr_t LabelSearch(hash_t hash_label, label_t *arr_labels, size_t count_labels, ssize_t *index);
+
 
 struct WrapCmd
 {
-    func_t func;
-    hash_t hash;
+    func_t   func;
+    hash_t   hash;
     CmdCodes cmd; 
 };
 
 
 AsmErr_t VerifyAsmInstrSetSort();
+hash_t HashCmd(const char *buffer);
 char** ArrPtrCtor(FILE *SourceFile, char* buffer, size_t *count_line);
 void RemoveComments(char** arr_cmd, size_t *count_line);
-AsmErr_t Assembler(FILE *ByteCode, char **arr_ptr, size_t count_n);
-AsmErr_t CodeWriter(byte_t *code, char **arr_cmd, size_t count_cmd, label_t *arr_labels, size_t *count_labels, size_t *pc, bool is_first_pass);
-AsmErr_t AddLabel(label_t *arr_labels, char* label, size_t *count_labels, size_t pc);
-hash_t HashCmd(const char *buffer);
+AsmErr_t CodeCtor(FILE *ByteCode, char **arr_ptr, size_t count_n);
+
+AsmErr_t FirstCompilation(char **arr_cmd, size_t count_cmd, label_t *arr_labels, size_t *count_labels, size_t *pc);
+AsmErr_t AddLabel(char *label, label_t *arr_labels, size_t *count_labels);
+int CmpByHash(const void *a, const void *b);
+
+AsmErr_t SecondCompilation(byte_t *code, char **arr_cmd, size_t count_cmd, label_t *arr_labels, size_t *count_labels, size_t *pc);
 AsmErr_t HashSearch(hash_t hash_func, ssize_t *index);
-void AsmErrPrint(FILE *SourceFile, FILE *ByteCode, AsmErr_t verd);
+
+void AsmErrPrint(char *SourceFile, char *ByteCode, AsmErr_t verd);
 void AsmDtor(char *buffer, char **arr_ptr);
 
 #define IS_BAD_PTR(ptr) IsBadPtr((void*)ptr)

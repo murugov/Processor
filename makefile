@@ -8,11 +8,11 @@ STK_INCLUDES  	= -I./SPU/STACK/headers
 
 COMMON_FILES = COMMON/IsBadPtr.cpp COMMON/LineCounter.cpp COMMON/SizeFile.cpp COMMON/TXTreader.cpp
 GEN_FILES 	 = COMPILER/HashCmd.cpp
-ASM_FILES 	 = COMPILER/ArrPtrCtor.cpp COMPILER/AsmCmdWrt.cpp COMPILER/AsmErrPrint.cpp COMPILER/Assembler.cpp COMPILER/HashCmd.cpp COMPILER/AsmVerifySort.cpp
-SPU_FILES 	 = SPU/CalcFunc.cpp SPU/spuErrPrint.cpp SPU/spuExecutor.cpp
+ASM_FILES 	 = COMPILER/ArrPtrCtor.cpp COMPILER/AsmArgParser.cpp COMPILER/AsmCmdWrt.cpp COMPILER/AsmErrPrint.cpp COMPILER/AsmVerifySort.cpp COMPILER/CodeCtor.cpp COMPILER/FirstCompilation.cpp COMPILER/HashCmd.cpp COMPILER/SecondCompilation.cpp
+SPU_FILES 	 = SPU/CalcFunc.cpp SPU/spuCtor.cpp SPU/spuErrPrint.cpp SPU/spuExecutor.cpp SPU/SpuVerifySort.cpp SPU/SpuArgParser.cpp
 STK_FILES 	 = SPU/STACK/HashFunc.cpp
 
-DEFAULT_INPUT ?= CompileFiles/source.asm
+DEFAULT_INPUT  ?= CompileFiles/source.asm
 DEFAULT_OUTPUT ?= CompileFiles/bytecode.asm
 
 

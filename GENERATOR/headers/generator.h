@@ -25,7 +25,7 @@ struct asm_instr_t
 {
     spec_t spec;
     hash_t hash;
-    cmd_t cmd;
+    cmd_t  cmd;
 };
 
 struct spu_instr_t

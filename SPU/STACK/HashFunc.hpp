@@ -11,21 +11,9 @@ hash_t HashFunc(stk_t<T> *stk)
     if (IS_BAD_PTR(stk) || IS_BAD_PTR(stk->data))
         return new_hash;
 
-    // new_hash = (new_hash << 5) - new_hash + (hash_t)stk;
-
-    // new_hash = (new_hash << 5) - new_hash + (hash_t)(stk->canary_1);
-
-    // new_hash = (new_hash << 5) - new_hash + (hash_t)(stk->data);
-
     for (size_t i = 0; i < (size_t)stk->capacity; ++i)
         new_hash = (new_hash << 5) - new_hash + (hash_t)(stk->data[i]);
     
-    // new_hash = (new_hash << 5) - new_hash + (hash_t)(stk->size);
-
-    // new_hash = (new_hash << 5) - new_hash + (hash_t)(stk->capacity);
-
-    // new_hash = (new_hash << 5) - new_hash + (hash_t)(stk->canary_2);
-
     return new_hash;
 }
 

@@ -1,9 +1,13 @@
 #include <stdio.h>
+#include "IsBadPtr.h"
 
 
 template <typename T>
 ssize_t BinSearch(T *arr, size_t size, T target)
 {
+    if (IsBadPtr((void*)arr))
+        return -1;
+        
     size_t left = 0;
     size_t right = size - 1;
 

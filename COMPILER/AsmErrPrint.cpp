@@ -2,16 +2,16 @@
 #include "colors.h"
 
 
-void AsmErrPrint(FILE *SourceFile, FILE *ByteCode, AsmErr_t verd)
+void AsmErrPrint(char *SourceFile, char *ByteCode, AsmErr_t verd)
 {
     switch (verd)
     {
         case BAD_INPUT_FILE_PTR:
-            printf(ANSI_COLOR_RED "Bad pointer to %s!" ANSI_COLOR_RESET, (char*)SourceFile);
+            printf(ANSI_COLOR_RED "Bad pointer to %s!" ANSI_COLOR_RESET, SourceFile);
             break;
 
         case BAD_OUTPUT_FILE_PTR:
-            printf(ANSI_COLOR_RED "Bad pointer to %s!" ANSI_COLOR_RESET, (char*)ByteCode);
+            printf(ANSI_COLOR_RED "Bad pointer to %s!" ANSI_COLOR_RESET, ByteCode);
             break;
 
         case BAD_BUFFER_PTR:
@@ -50,8 +50,8 @@ void AsmErrPrint(FILE *SourceFile, FILE *ByteCode, AsmErr_t verd)
             perror(ANSI_COLOR_RED "Error filling array code in function CmdWithoutArg!\n" ANSI_COLOR_RESET);
             break;
 
-        case ADD_LABEL_FAIL:
-            perror(ANSI_COLOR_RED "Error adding label to arr_labels in function AddLabel!\n" ANSI_COLOR_RESET);
+        case LINE_SIZE_EXCEED:
+            printf(ANSI_COLOR_RED "Line size exceeded in %s!\n" ANSI_COLOR_RESET, SourceFile);
             break;
 
         case REG_NEX:
@@ -63,9 +63,15 @@ void AsmErrPrint(FILE *SourceFile, FILE *ByteCode, AsmErr_t verd)
             break; 
 
         case UNKNOWN_CMD:
+            printf(ANSI_COLOR_RED "Unknown command in %s!\n" ANSI_COLOR_RESET, SourceFile); // return line with error
             break;
 
         case UNKNOWN_LABEL:
+            printf(ANSI_COLOR_RED "Unknown label in %s!\n" ANSI_COLOR_RESET, SourceFile); // return line with error
+            break;
+
+        case RE_LABEL:
+            printf(ANSI_COLOR_RED "Repeated label in %s!\n" ANSI_COLOR_RESET, SourceFile); // return line with error
             break;
 
         case SUCCESS:

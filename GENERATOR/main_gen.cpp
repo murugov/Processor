@@ -252,7 +252,11 @@ int CmpByHash(const void *a, const void *b)
     const asm_instr_t *arr_instr_a = (const asm_instr_t*)a;
     const asm_instr_t *arr_instr_b = (const asm_instr_t*)b;
 
-    return (int)(arr_instr_a->hash - arr_instr_b->hash);
+    if (arr_instr_a->hash > arr_instr_b->hash)
+        return 1;
+    if (arr_instr_a->hash == arr_instr_b->hash)
+        return 0;
+    return -1;
 }
 
 int CmpByNum(const void *a, const void *b)
