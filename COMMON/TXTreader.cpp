@@ -1,32 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include "IsBadPtr.h"
-#include "SizeFile.h"
-#include "LineCounter.h"
+#include "TXTreader.hpp"
 
 
-int no_change(int c)
+int no_change(int c) { return c; }
+
+char** TXTreader(FILE *SourceFile, char* buffer, size_t *len_buffer, int *count_line, int (*convert)(int))
 {
-    return c;
-}
-
-char** TXTreader(FILE *SourceFile, char* buffer, size_t *count_line, int (*convert)(int))
-{
-    if (IsBadPtr((void*)SourceFile))
-        return NULL;
+    if (IS_BAD_PTR(SourceFile)) return NULL;
 
     ssize_t file_size = SizeFile(SourceFile);
-    if (file_size < 0)
-        return NULL;
+    if (file_size < 0) return NULL;
 
     buffer = (char*)calloc((size_t)file_size + 1, sizeof(char));
-    if (IsBadPtr((void*)buffer))
-        return NULL;
+    if (IsBadPtr((void*)buffer)) return NULL;
 
     size_t capacity = fread(buffer, sizeof(char), (size_t)file_size, SourceFile);
     buffer[capacity] = '\0';
+    *len_buffer = capacity;
 
     if (convert == NULL)
         convert = no_change;
@@ -35,12 +24,10 @@ char** TXTreader(FILE *SourceFile, char* buffer, size_t *count_line, int (*conve
         buffer[num_elem] = (char)convert(buffer[num_elem]);
 
     *count_line = LineCounter(buffer);
-    if (*count_line == 0)
-        return NULL;
+    if (*count_line == 0) return NULL;
 
-    char **arr_ptr = (char**)calloc(*count_line + 1, sizeof(char*));
-    if (IsBadPtr((void*)arr_ptr))
-        return NULL;
+    char **lines = (char**)calloc((size_t)(*count_line + 1), sizeof(char*));
+    if (IS_BAD_PTR(lines)) return NULL;
     
     size_t line_number = 0;
     char* line_start = buffer;
@@ -55,13 +42,12 @@ char** TXTreader(FILE *SourceFile, char* buffer, size_t *count_line, int (*conve
             if (!isspace((unsigned char)*ptr))
             {
                 has_content = 1;
-                arr_ptr[line_number] = ptr;
+                lines[line_number] = ptr;
                 break;
             }
         }
         
-        if (has_content)
-            line_number++;
+        if (has_content) line_number++;
         
         line_start = next_n + 1;
 
@@ -74,11 +60,26 @@ char** TXTreader(FILE *SourceFile, char* buffer, size_t *count_line, int (*conve
         {
             if (!isspace((unsigned char)*ptr)) 
             {
-                arr_ptr[line_number++] = ptr;
+                lines[line_number++] = ptr;
                 break;
             }
         }
     }
 
-    return arr_ptr;
+    for (int i = 0; i < *count_line; ++i)
+        lines[i] = strdup(lines[i]);
+    
+    free(buffer);
+    return lines;
+}
+
+
+void FreeLines(char **lines, int count_lines)
+{
+    if (IS_BAD_PTR(lines)) return;
+
+    for (int i = 0; i < count_lines; ++i)
+        free(lines[i]);
+
+    free(lines);
 }
